@@ -70,12 +70,9 @@ const goToSlide = (index: number) => {
 let autoPlayInterval: ReturnType<typeof setInterval> | null = null;
 let progressInterval: ReturnType<typeof setInterval> | null = null;
 let startTime: number = 0;
-let pausedTime: number = 0;
 
 const startAutoPlay = () => {
-
     startTime = Date.now();
-    pausedTime = 0;
     progress.value = 0;
 
     progressInterval = setInterval(() => {
@@ -98,8 +95,6 @@ const stopAutoPlay = () => {
         clearInterval(progressInterval);
         progressInterval = null;
     }
-
-    pausedTime = Date.now() - startTime;
 };
 
 onMounted(() => {
