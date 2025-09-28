@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import SectionTitle from '@/components/ui/SectionTitle.vue';
-import BenefitCard from '@/components/ui/BenefitCard.vue';
-import { benefits } from '@/data/benefits';
+import SectionTitle from '../../components/ui/SectionTitle.vue';
+import BenefitCard from '../../components/ui/BenefitCard.vue';
+import { benefits } from '../../data/benefits';
+
 </script>
 
 <template>

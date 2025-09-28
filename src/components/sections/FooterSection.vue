@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { contactInfo, footerLinks } from '@/data/footer';
+import { contactInfo, footerLinks } from '../../data/footer';
 
 const email = ref('');
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import SectionTitle from '@/components/ui/SectionTitle.vue';
-import CategoryCard from '@/components/ui/CategoryCard.vue';
-import { categories } from '@/data/categories';
+import SectionTitle from '../../components/ui/SectionTitle.vue';
+import CategoryCard from '../../components/ui/CategoryCard.vue';
+import { categories } from '../../data/categories';
 </script>
 
 <template>

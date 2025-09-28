@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Benefit } from '@/data/benefits';
+import type { Benefit } from '../../data/benefits';
 
 const props = defineProps<{
     benefit: Benefit;
@@ -60,8 +60,7 @@ const props = defineProps<{
 
                     <!-- Tag -->
                     <div class="inline-block mb-4">
-                        <span
-                            class="px-3 py-1 rounded-lg text-sm font-medium bg-[#D4E1FF] text-[var(--primary-teal)]">
+                        <span class="px-3 py-1 rounded-lg text-sm font-medium bg-[#D4E1FF] text-[var(--primary-teal)]">
                             {{ props.benefit.tag }}
                         </span>
                     </div>

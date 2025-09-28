@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { giftCard } from '@/data/giftCards';
+import { giftCard } from '../../data/giftCards';
 </script>
 
 <template>

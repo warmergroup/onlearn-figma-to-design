@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import type { Course } from '@/data/courses';
+import type { Course } from '../../data/courses';
 
 const props = defineProps<{
     bundle: Course;

@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import SectionTitle from '@/components/ui/SectionTitle.vue';
-import BundleCard from '@/components/ui/BundleCard.vue';
-import { courses } from '@/data/courses';
+import SectionTitle from '../../components/ui/SectionTitle.vue';
+import BundleCard from '../../components/ui/BundleCard.vue';
+import { courses } from '../../data/courses';
 
 const currentIndex = ref(0);
 const progress = ref(0);
 
 // Infinite scroll
 const visibleBundles = computed(() => {
-    const result = [];
+    const result: any[] = [];
     const total = courses.length;
 
     const prevIndex = currentIndex.value === 0 ? total - 1 : currentIndex.value - 1;
-    result.push({ ...courses[prevIndex], isBlurred: true, isPrev: true });
+    result.push({ ...courses[prevIndex], isBlurred: true, isPrev: true, isNext: false, isActive: false });
 
-    result.push({ ...courses[currentIndex.value], isBlurred: false, isActive: true });
+    result.push({ ...courses[currentIndex.value], isBlurred: false, isActive: true, isPrev: false, isNext: false });
 
     const nextIndex = currentIndex.value === total - 1 ? 0 : currentIndex.value + 1;
-    result.push({ ...courses[nextIndex], isBlurred: true, isNext: true });
+    result.push({ ...courses[nextIndex], isBlurred: true, isNext: true, isPrev: false, isActive: false });
 
     return result;
 });
@@ -84,8 +84,10 @@ const startAutoPlay = () => {
         progress.value = progressPercent;
 
         if (progressPercent >= 100) {
-            clearInterval(progressInterval);
-            progressInterval = null;
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
             nextSlide();
         }
     }, 16);

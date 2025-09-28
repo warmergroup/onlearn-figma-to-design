@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import SectionTitle from '@/components/ui/SectionTitle.vue';
-import CourseCard from '@/components/ui/CourseCard.vue';
-import { courses } from '@/data/courses';
+import SectionTitle from '../../components/ui/SectionTitle.vue';
+import CourseCard from '../../components/ui/CourseCard.vue';
+import { courses } from '../../data/courses';
 
 const activeTab = ref('all programs');
 

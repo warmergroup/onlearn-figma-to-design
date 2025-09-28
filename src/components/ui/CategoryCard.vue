@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Category } from '@/data/categories';
+import type { Category } from '../../data/categories';
 
 const props = defineProps<{
     category: Category;
