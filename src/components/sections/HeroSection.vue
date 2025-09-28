@@ -114,7 +114,8 @@ import CircularText from '@/components/ui/CircularText.vue';
 
                 <!-- Circular Text -->
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <CircularText text="Explore More - Explore More - " />
+                    <CircularText text="Explore More - Explore More - " :radius="80" :fontSize="14" :spinDuration="50"
+                        onHover="pause" />
                 </div>
             </button>
         </div>

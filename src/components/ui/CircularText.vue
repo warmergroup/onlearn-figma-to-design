@@ -1,34 +1,33 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect, onUnmounted } from 'vue';
-import { Motion } from 'motion-v';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 
 interface CircularTextProps {
     text: string;
     spinDuration?: number;
     onHover?: 'slowDown' | 'speedUp' | 'pause' | 'goBonkers';
     className?: string;
+    radius?: number;
+    fontSize?: number;
 }
 
 const props = withDefaults(defineProps<CircularTextProps>(), {
     text: '',
     spinDuration: 50,
-    onHover: 'pause', // 'slowDown', 'speedUp', 'goBonkers', 'pause'
-    className: ''
+    onHover: 'pause',
+    className: '',
+    radius: 90,
+    fontSize: 16
 });
 
 const letters = computed(() => Array.from(props.text));
 const isHovered = ref(false);
-
 const currentRotation = ref(0);
 const animationId = ref<number | null>(null);
-const lastTime = ref<number>(Date.now());
-const rotationSpeed = ref<number>(0);
 
 const getCurrentSpeed = () => {
     if (isHovered.value && props.onHover === 'pause') return 0;
 
-    const baseDuration = props.spinDuration;
-    const baseSpeed = 360 / baseDuration;
+    const baseSpeed = 360 / props.spinDuration;
 
     if (!isHovered.value) return baseSpeed;
 
@@ -49,17 +48,8 @@ const getCurrentScale = () => {
 };
 
 const animate = () => {
-    const now = Date.now();
-    const deltaTime = (now - lastTime.value) / 1000;
-    lastTime.value = now;
-
-    const targetSpeed = getCurrentSpeed();
-
-    const speedDiff = targetSpeed - rotationSpeed.value;
-    const smoothingFactor = Math.min(1, deltaTime * 5);
-    rotationSpeed.value += speedDiff * smoothingFactor;
-
-    currentRotation.value = (currentRotation.value + rotationSpeed.value * deltaTime) % 360;
+    const speed = getCurrentSpeed();
+    currentRotation.value = (currentRotation.value + speed * 0.016) % 360; // 60 FPS
 
     animationId.value = requestAnimationFrame(animate);
 };
@@ -68,22 +58,15 @@ const startAnimation = () => {
     if (animationId.value) {
         cancelAnimationFrame(animationId.value);
     }
-    lastTime.value = Date.now();
-    rotationSpeed.value = getCurrentSpeed();
     animate();
 };
 
-watchEffect(() => {
-    startAnimation();
-});
-
-startAnimation();
-
-onUnmounted(() => {
+const stopAnimation = () => {
     if (animationId.value) {
         cancelAnimationFrame(animationId.value);
+        animationId.value = null;
     }
-});
+};
 
 const handleHoverStart = () => {
     isHovered.value = true;
@@ -93,37 +76,69 @@ const handleHoverEnd = () => {
     isHovered.value = false;
 };
 
-const getLetterTransform = (index: number) => {
-    const rotationDeg = (360 / letters.value.length) * index;
-    const factor = Math.PI / letters.value.length;
-    const x = factor * index;
-    const y = factor * index;
-    return `rotateZ(${rotationDeg}deg) translate3d(${x}px, ${y}px, 0)`;
+const getLetterStyle = (index: number) => {
+    const angle = (360 / letters.value.length) * index;
+    const x = Math.cos((angle * Math.PI) / 180) * props.radius;
+    const y = Math.sin((angle * Math.PI) / 180) * props.radius;
+
+    return {
+        position: 'absolute' as const,
+        left: '50%',
+        top: '50%',
+        transform: `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${angle + 90}deg)`,
+        transformOrigin: 'center',
+        fontSize: `${props.fontSize}px`,
+        fontFamily: 'Clash Display, Inter, system-ui, sans-serif',
+        fontWeight: '600' as const,
+        color: 'white',
+        whiteSpace: 'nowrap' as const
+    };
 };
+
+onMounted(() => {
+    startAnimation();
+});
+
+onUnmounted(() => {
+    stopAnimation();
+});
 </script>
 
 <template>
-    <Motion :animate="{
-        rotate: currentRotation,
-        scale: getCurrentScale()
-    }" :transition="{
-        rotate: {
-            duration: 0
-        },
-        scale: {
-            type: 'spring',
-            damping: 20,
-            stiffness: 300
-        }
-    }" :class="`m-0 mx-auto rounded-full w-[200px] h-[200px] relative font-black text-white text-center cursor-pointer origin-center ${props.className}`"
-        @mouseenter="handleHoverStart" @mouseleave="handleHoverEnd">
-        <span v-for="(letter, i) in letters" :key="i"
-            class="absolute inline-block inset-0 text-2xl transition-all duration-500 ease-[cubic-bezier(0,0,0,1)]"
-            :style="{
-                transform: getLetterTransform(i),
-                WebkitTransform: getLetterTransform(i)
-            }">
-            {{ letter }}
-        </span>
-    </Motion>
+    <div class="circular-text-container" :class="props.className" :style="{
+        width: `${props.radius * 2}px`,
+        height: `${props.radius * 2}px`,
+        transform: `scale(${getCurrentScale()})`,
+        transition: 'transform 0.3s ease'
+    }" @mouseenter="handleHoverStart" @mouseleave="handleHoverEnd">
+        <div class="circular-text" :style="{
+            transform: `rotate(${currentRotation}deg)`,
+            width: `${props.radius * 2}px`,
+            height: `${props.radius * 2}px`
+        }">
+            <span v-for="(letter, index) in letters" :key="index" :style="getLetterStyle(index)">
+                {{ letter }}
+            </span>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+.circular-text-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.circular-text {
+    position: relative;
+    transition: transform 0.1s linear;
+}
+
+/* Hover effects */
+.circular-text-container:hover {
+    filter: brightness(1.1);
+}
+</style>
