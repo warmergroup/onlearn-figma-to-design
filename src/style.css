@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'PicoBlackAl';
+  src: url('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Clash Display';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+.font-pico {
+  font-family: 'PicoBlackAl', 'Inter', system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Brand Colors */
+  --primary-teal: #0B7077;
+  --primary-orange: #FD661F;
+  --light-teal: #E0F7FA;
+  --dark-teal: #0B7077;
+  --nav-text: #252641;
+  --nav-text-hover: #FD661F;
+}
+
+.brand-color {
+  color: #0B7077;
+}
+
+.brand-orange {
+  color: #FD661F;
+}
+.hero-section {
+  background-color: #D2E6E4;
+}
+
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.scale-102 {
+  transform: scale(1.02);
+}
