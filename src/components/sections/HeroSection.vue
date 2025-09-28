@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CircularText from '@/components/ui/CercularText.vue';
+import CircularText from '@/components/ui/CircularText.vue';
 </script>
 <template>
     <main id="home" class="w-full max-h-[90vh] hero-bg rounded-b-[50px] relative overflow-hidden">
